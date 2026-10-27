@@ -101,7 +101,7 @@ export const projects: Project[] = [
     ],
     githubLink: "https://github.com/abhi01820/BuddyChat",
     demoLink: "https://buddychat-i9qy.onrender.com",
-    image: "/projects/project2.png",
+    image: "/projects/buddychat.png",
   },
   {
     title: "🤍 SoulSync: AI Relationship Companion",
