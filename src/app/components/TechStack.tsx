@@ -14,10 +14,12 @@ import {
   FaBrain, FaRobot, FaLanguage, FaMagic, FaProjectDiagram, 
   FaNetworkWired, FaDatabase, FaCode, FaObjectGroup
 } from "react-icons/fa";
+import { cyberAudio } from "@/utils/cyberAudio";
 
 const SkillIcon = ({ icon: Icon, name, color }: { icon: IconType, name: string, color: string }) => {
   return (
     <motion.div
+      onMouseEnter={() => cyberAudio.playHover()}
       whileHover={{ y: -5, scale: 1.05, boxShadow: `0 0 20px ${color}60`, borderColor: color }}
       className="relative flex flex-col items-center justify-center p-4 rounded-xl border border-gray-800 bg-black/40 cursor-pointer group transition-all duration-300"
     >

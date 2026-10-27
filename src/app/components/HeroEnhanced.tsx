@@ -12,25 +12,29 @@ import {
   FaLinkedin,
   FaTwitter,
   FaFileDownload,
-  FaProjectDiagram,
   FaTimes,
-  FaTerminal
+  FaTerminal,
+  FaArrowDown,
+  FaCode,
+  FaRobot,
+  FaCheckCircle
 } from "react-icons/fa";
-import { MdContactMail } from "react-icons/md";
+import { cyberAudio } from "@/utils/cyberAudio";
 
 // Animated Cyber Circuit Background
 function CyberCircuitBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Central Glowing Core */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#00f2fe]/10 rounded-full blur-[100px]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150px] h-[150px] bg-[#00ff41]/10 rounded-full blur-[80px]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[#00f2fe]/10 rounded-full blur-[120px]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] bg-[#00ff41]/10 rounded-full blur-[90px]" />
 
       {/* SVG Circuits */}
       <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="circuit-glow" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#00f2fe" />
+            <stop offset="50%" stopColor="#a855f7" />
             <stop offset="100%" stopColor="#00ff41" />
           </linearGradient>
           <filter id="glow-blur">
@@ -48,7 +52,6 @@ function CyberCircuitBackground() {
           <path d="M 550 400 L 550 200 L 800 200 L 1000 200" />
           <path d="M 450 600 L 450 750 L 200 750 L 0 750" />
           <path d="M 550 600 L 550 800 L 800 800 L 1000 800" />
-          
           <path d="M 400 450 L 250 450 L 250 100 L 0 100" />
           <path d="M 600 550 L 750 550 L 750 900 L 1000 900" />
         </g>
@@ -63,30 +66,6 @@ function CyberCircuitBackground() {
           <circle cx="750" cy="900" r="4" filter="url(#glow-blur)" />
         </g>
       </svg>
-      
-      {/* Falling Matrix-like particles / Sparkles */}
-      <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-[#00f2fe] rounded-full shadow-[0_0_8px_#00f2fe]"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `-5%`,
-            }}
-            animate={{
-              y: ['0vh', '105vh'],
-              opacity: [0, 1, 1, 0],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 5,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-              ease: "linear"
-            }}
-          />
-        ))}
-      </div>
     </div>
   );
 }
@@ -99,7 +78,11 @@ type DownloadForm = {
   purpose: string;
 };
 
-const DownloadModal = ({ isOpen, onClose, onSubmit }: {
+const DownloadModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+}: {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: DownloadForm) => void;
@@ -108,16 +91,29 @@ const DownloadModal = ({ isOpen, onClose, onSubmit }: {
     name: '',
     email: '',
     company: '',
-    purpose: ''
+    purpose: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [downloadSuccess, setDownloadSuccess] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+    cyberAudio.playClick();
+
     try {
-      const response = await fetch('/api/download-request', {
+      // Send user details to backend
+      await fetch('/api/download-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -125,132 +121,154 @@ const DownloadModal = ({ isOpen, onClose, onSubmit }: {
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
-
-      if (response.ok) {
-        onSubmit(formData);
-        alert('Access requested successfully.');
-        onClose();
-      } else {
-        alert(result.error || 'Error submitting request. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error submitting request. Please try again.');
+      // Automatically open the resume CV
+      window.open('/Mekala Abhilash_CV.pdf', '_blank');
+      setDownloadSuccess(true);
+      onSubmit(formData);
+    } catch {
+      // Open CV even if tracking endpoint errors
+      window.open('/Mekala Abhilash_CV.pdf', '_blank');
+      setDownloadSuccess(true);
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
   };
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="cyber-chip p-6 w-full max-w-md relative"
+            className="cyber-chip p-6 sm:p-8 w-full max-w-md relative border-2 border-[#00f2fe] shadow-[0_0_40px_rgba(0,242,254,0.3)]"
             initial={{ scale: 0.9, y: 20, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.9, y: 20, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              onClick={onClose}
-              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-[#00f2fe] hover:text-[#00ff41] transition-colors"
+              onClick={() => {
+                cyberAudio.playClick();
+                onClose();
+              }}
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-[#00f2fe] hover:text-[#00ff41] transition-colors border border-gray-800 rounded-lg bg-black"
             >
               <FaTimes />
             </button>
 
             <div className="mb-6">
-              <h3 className="text-2xl font-mono font-bold text-white mb-2 flex items-center gap-2">
+              <h3 className="text-xl sm:text-2xl font-mono font-bold text-white mb-2 flex items-center gap-2">
                 <FaTerminal className="text-[#00ff41]" /> System.Access
               </h3>
-              <p className="text-gray-400 font-mono text-sm">
-                &gt; Enter credentials to request secure resume download...
+              <p className="text-gray-400 font-mono text-xs sm:text-sm">
+                &gt; Enter your details to view and download resume...
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 font-mono">
-              <div>
-                <label className="block text-sm text-[#00f2fe] mb-1">&gt; Name_</label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 bg-black/50 border border-[#00f2fe]/30 rounded-none focus:outline-none focus:border-[#00ff41] text-white"
-                />
+            {downloadSuccess ? (
+              <div className="p-6 text-center space-y-4 font-mono">
+                <FaCheckCircle className="w-12 h-12 text-[#00ff41] mx-auto animate-bounce" />
+                <p className="text-[#00ff41] font-bold text-base">PROTOCOL_EXECUTED: ACCESS GRANTED</p>
+                <p className="text-gray-300 text-xs">
+                  Your credentials were accepted. The CV was dispatched.
+                </p>
+                <div className="pt-2 flex flex-col gap-2">
+                  <a
+                    href="/Mekala Abhilash_CV.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    download="Mekala_Abhilash_CV.pdf"
+                    className="px-6 py-2.5 bg-[#00ff41]/20 hover:bg-[#00ff41]/40 border border-[#00ff41] text-[#00ff41] rounded-xl text-xs uppercase tracking-widest font-bold inline-flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(0,255,65,0.4)]"
+                  >
+                    <FaFileDownload /> Direct Download PDF
+                  </a>
+                  <button
+                    onClick={onClose}
+                    className="text-gray-400 hover:text-white text-xs mt-2"
+                  >
+                    [Close Window]
+                  </button>
+                </div>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4 font-mono text-xs">
+                <div>
+                  <label className="block text-[#00f2fe] mb-1 font-bold">&gt; Name_</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="E.g., Ada Lovelace"
+                    className="w-full px-3 py-2 bg-black/60 border border-[#00f2fe]/30 rounded-lg focus:outline-none focus:border-[#00ff41] text-white"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm text-[#00f2fe] mb-1">&gt; Email_</label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 bg-black/50 border border-[#00f2fe]/30 rounded-none focus:outline-none focus:border-[#00ff41] text-white"
-                />
-              </div>
+                <div>
+                  <label className="block text-[#00f2fe] mb-1 font-bold">&gt; Email_</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="recruiter@enterprise.com"
+                    className="w-full px-3 py-2 bg-black/60 border border-[#00f2fe]/30 rounded-lg focus:outline-none focus:border-[#00ff41] text-white"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm text-[#00f2fe] mb-1">&gt; Organization_</label>
-                <input
-                  type="text"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 bg-black/50 border border-[#00f2fe]/30 rounded-none focus:outline-none focus:border-[#00ff41] text-white"
-                />
-              </div>
+                <div>
+                  <label className="block text-[#00f2fe] mb-1 font-bold">&gt; Organization_</label>
+                  <input
+                    type="text"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleChange}
+                    placeholder="Tech Corp / VC"
+                    className="w-full px-3 py-2 bg-black/60 border border-[#00f2fe]/30 rounded-lg focus:outline-none focus:border-[#00ff41] text-white"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm text-[#00f2fe] mb-1">&gt; Intent_</label>
-                <select
-                  name="purpose"
-                  required
-                  value={formData.purpose}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 bg-black/50 border border-[#00f2fe]/30 rounded-none focus:outline-none focus:border-[#00ff41] text-white"
-                >
-                  <option value="" className="bg-gray-900">Select intent...</option>
-                  <option value="job-opportunity" className="bg-gray-900">Recruitment</option>
-                  <option value="collaboration" className="bg-gray-900">Collaboration</option>
-                  <option value="freelance" className="bg-gray-900">Contracting</option>
-                  <option value="other" className="bg-gray-900">Other</option>
-                </select>
-              </div>
+                <div>
+                  <label className="block text-[#00f2fe] mb-1 font-bold">&gt; Intent_</label>
+                  <select
+                    name="purpose"
+                    required
+                    value={formData.purpose}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 bg-black/60 border border-[#00f2fe]/30 rounded-lg focus:outline-none focus:border-[#00ff41] text-white"
+                  >
+                    <option value="" className="bg-gray-900">Select intent...</option>
+                    <option value="job-opportunity" className="bg-gray-900">Direct Hiring / Recruitment</option>
+                    <option value="collaboration" className="bg-gray-900">AI / Tech Collaboration</option>
+                    <option value="freelance" className="bg-gray-900">Contracting / Consulting</option>
+                    <option value="other" className="bg-gray-900">General Review</option>
+                  </select>
+                </div>
 
-              <div className="flex gap-3 pt-4">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/40 border border-[#00ff41] text-[#00ff41] font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest"
-                >
-                  {isSubmitting ? (
-                    'Processing...'
-                  ) : (
-                    <>
-                      <FaFileDownload /> Execute Request
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-3 bg-[#00ff41]/20 hover:bg-[#00ff41]/40 border border-[#00ff41] text-[#00ff41] font-bold rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest text-xs shadow-[0_0_15px_rgba(0,255,65,0.3)] cursor-pointer"
+                  >
+                    {isSubmitting ? (
+                      'Authenticating...'
+                    ) : (
+                      <>
+                        <FaFileDownload /> Submit & Unlock Resume
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
           </motion.div>
         </motion.div>
       )}
@@ -265,93 +283,148 @@ const Hero = () => {
     console.log('Download request from:', data);
   };
 
+  const socialLinks = [
+    { icon: FaGithub, href: "https://github.com/abhi01820", label: "GitHub" },
+    { icon: FaLinkedin, href: "https://www.linkedin.com/in/abhilash-mekala-b2a903355/", label: "LinkedIn" },
+    { icon: FaTwitter, href: "https://x.com/abhilash_01820", label: "Twitter" },
+    { icon: SiLeetcode, href: "https://leetcode.com/u/abhi_01820/", label: "LeetCode" },
+    { icon: SiGeeksforgeeks, href: "https://www.geeksforgeeks.org/profile/johnab04hg?tab=activity", label: "GFG" }
+  ];
+
   return (
-    <section className="relative py-24 container max-w-7xl mx-auto px-4 overflow-hidden min-h-[90vh] flex items-center">
-      
+    <section className="relative pt-12 pb-20 container max-w-7xl mx-auto px-4 overflow-hidden min-h-[88vh] flex flex-col justify-center">
       <CyberCircuitBackground />
 
-      <div className="relative z-20 flex flex-col md:flex-row items-center justify-between gap-12 w-full">
-        {/* Left: Cyber Profile Image */}
+      {/* High-Visibility Big Screen Background Portrait (oneWomanMan.png) */}
+      <div className="absolute right-0 top-0 bottom-0 w-full sm:w-3/4 md:w-3/5 lg:w-[52%] xl:w-[48%] pointer-events-none select-none z-0 flex items-end justify-end overflow-hidden">
+        {/* Ambient colored lighting behind the photo */}
+        <div className="absolute right-10 top-1/3 w-[450px] h-[450px] bg-[#00f2fe]/20 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute right-20 bottom-10 w-[400px] h-[400px] bg-[#a855f7]/20 rounded-full blur-[130px] pointer-events-none" />
+
+        <div className="relative w-full h-[88%] sm:h-[92%] lg:h-[96%] xl:h-full opacity-40 sm:opacity-55 lg:opacity-85 xl:opacity-90 transition-all duration-700">
+          <Image
+            src="/oneWomanMan.png"
+            alt="Abhilash Portrait"
+            fill
+            className="object-contain object-right-bottom"
+            priority
+          />
+          {/* Subtle gradient fades so edges blend into dark background */}
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#030712] via-[#030712]/70 to-transparent" />
+          <div className="absolute inset-y-0 left-0 w-28 sm:w-40 bg-gradient-to-r from-[#030712] to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#030712]/60 to-transparent" />
+        </div>
+      </div>
+
+      <div className="relative z-20 flex flex-col lg:flex-row items-center justify-between gap-12 w-full my-auto">
+        {/* Left: Cyber Profile Image with Orbiting Badges */}
         <motion.div 
           className="flex-shrink-0 relative"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="relative w-52 h-52 md:w-80 md:h-80 mx-auto md:mx-0 group">
-            {/* Hacker Rings */}
+          <div className="relative w-60 h-60 sm:w-72 sm:h-72 md:w-88 md:h-88 mx-auto group">
+            {/* Holographic Radar Rings */}
             <motion.div 
-              className="absolute inset-0 rounded-full border-2 border-[#00f2fe] border-dashed opacity-50"
+              className="absolute inset-0 rounded-full border-2 border-[#00f2fe]/60 border-dashed"
               animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
             />
             <motion.div 
               className="absolute -inset-4 rounded-full border border-[#00ff41]/50 border-dotted"
               animate={{ rotate: -360 }}
-              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
             />
-            
-            <div className="relative w-full h-full rounded-full overflow-hidden shadow-[0_0_30px_rgba(0,242,254,0.3)] bg-black p-1 border-2 border-[#00f2fe]/50 group-hover:border-[#00ff41] transition-colors duration-500">
+            <motion.div 
+              className="absolute -inset-8 rounded-full border border-purple-500/20"
+              animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.5, 0.2] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            {/* Orbiting Tech Badges */}
+            <motion.div
+              animate={{ y: [-4, 4, -4] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-3 -left-2 sm:-left-4 z-20 bg-black/90 border border-[#00ff41] text-[#00ff41] px-3 py-1 rounded-xl text-[11px] font-mono font-bold shadow-[0_0_15px_rgba(0,255,65,0.4)] flex items-center gap-1.5"
+            >
+              <FaCode className="text-xs" /> 785 LeetCode
+            </motion.div>
+
+            <motion.div
+              animate={{ y: [4, -4, 4] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -bottom-2 -right-2 sm:-right-4 z-20 bg-black/90 border border-[#00f2fe] text-[#00f2fe] px-3 py-1 rounded-xl text-[11px] font-mono font-bold shadow-[0_0_15px_rgba(0,242,254,0.4)] flex items-center gap-1.5"
+            >
+              <FaRobot className="text-xs" /> Agentic AI & RAG
+            </motion.div>
+
+            {/* Profile Avatar Frame */}
+            <div className="relative w-full h-full rounded-full overflow-hidden shadow-[0_0_40px_rgba(0,242,254,0.35)] bg-black p-1.5 border-2 border-[#00f2fe]/60 group-hover:border-[#00ff41] transition-colors duration-500">
               <Image
                 src="/profile.png"
-                alt="Abhi Profile"
-                width={320}
-                height={320}
-                className="object-cover w-full h-full rounded-full grayscale group-hover:grayscale-0 transition-all duration-500"
+                alt="Abhilash Profile"
+                width={360}
+                height={360}
+                className="object-cover w-full h-full rounded-full grayscale contrast-110 group-hover:grayscale-0 transition-all duration-700"
                 priority
               />
-              <div className="absolute inset-0 bg-[#00f2fe]/10 group-hover:bg-transparent transition-colors duration-500 rounded-full" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-[#00f2fe]/10 group-hover:bg-transparent transition-colors duration-500 rounded-full pointer-events-none" />
             </div>
           </div>
         </motion.div>
 
         {/* Right: Info Content */}
         <motion.div 
-          className="text-center md:text-left max-w-xl w-full"
+          className="text-center lg:text-left max-w-2xl w-full space-y-6"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 text-white font-mono uppercase tracking-tight">
+          {/* Status Chip */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/80 border border-[#00ff41]/50 text-xs font-mono text-[#00ff41]">
+            <span className="w-2 h-2 rounded-full bg-[#00ff41] animate-ping" />
+            <span>AVAILABLE FOR PRODUCTION ROLES & COLLABS</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white font-mono uppercase tracking-tight">
             Hi, I'm <span className="text-glow-cyan text-[#00f2fe]">Abhilash</span>
           </h1>
 
-          <div className="text-lg md:text-2xl text-[#00ff41] mb-6 font-mono min-h-[30px] md:h-[30px] h-auto font-bold flex flex-wrap">
+          <div className="text-xl sm:text-2xl md:text-3xl text-[#00ff41] font-mono min-h-[36px] font-bold flex justify-center lg:justify-start">
             <Typewriter
               words={[
-                "> Full Stack Developer_",
-                "> AI Engineer_",
-                "> Generative AI_",
-                "> Agentic AI_"
+                "> Full Stack Architect_",
+                "> AI Systems Engineer_",
+                "> Generative AI & RAG_",
+                "> Real-Time WebRTC Dev_"
               ]}
               loop={true}
               cursor
-              cursorStyle="|"
-              typeSpeed={70}
-              deleteSpeed={50}
-              delaySpeed={1500}
+              cursorStyle="█"
+              typeSpeed={60}
+              deleteSpeed={40}
+              delaySpeed={1600}
             />
           </div>
 
-
-
-          {/* Social Links */}
-          <div className="flex justify-center md:justify-start space-x-4 mb-8">
-            {[
-              { icon: FaGithub, href: "https://github.com/abhi01820" },
-              { icon: FaLinkedin, href: "https://www.linkedin.com/in/abhilash-mekala-b2a903355/" },
-              { icon: FaTwitter, href: "https://x.com/abhilash_01820" },
-              { icon: SiLeetcode, href: "https://leetcode.com/u/abhi_01820/" },
-              { icon: SiGeeksforgeeks, href: "https://www.geeksforgeeks.org/profile/johnab04hg?tab=activity" }
-            ].map((social, index) => (
+          {/* Social Links Bar */}
+          <div className="flex justify-center lg:justify-start items-center gap-3 pt-2">
+            {socialLinks.map((social, index) => (
               <motion.div 
                 key={index} 
                 whileHover={{ y: -5, scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <Link href={social.href}>
-                  <div className="w-12 h-12 rounded-lg border border-[#00f2fe]/40 bg-[#050505] flex items-center justify-center transition-all hover:border-[#00f2fe] hover:shadow-[0_0_15px_rgba(0,242,254,0.5)]">
-                    <social.icon className="text-[#00f2fe] text-xl" />
+                <Link 
+                  href={social.href}
+                  target="_blank"
+                  title={social.label}
+                  onClick={() => cyberAudio.playClick()}
+                >
+                  <div className="w-11 h-11 rounded-xl border border-[#00f2fe]/40 bg-black/60 flex items-center justify-center transition-all hover:border-[#00f2fe] hover:shadow-[0_0_20px_rgba(0,242,254,0.5)] hover:text-[#00f2fe] text-gray-300">
+                    <social.icon className="text-lg" />
                   </div>
                 </Link>
               </motion.div>
@@ -359,19 +432,50 @@ const Hero = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row flex-wrap gap-4 font-mono text-sm tracking-wider uppercase">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
-              <button
-                onClick={() => setShowDownloadModal(true)}
-                className="bg-[#00f2fe]/20 border border-[#00f2fe] hover:bg-[#00f2fe]/40 text-[#00f2fe] px-8 py-4 rounded-lg w-full text-center flex items-center justify-center gap-3 transition-colors shadow-[0_0_15px_rgba(0,242,254,0.3)]"
-              >
-                <FaFileDownload className="text-lg" />
-                Extract_Resume
-              </button>
-            </motion.div>
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 font-mono text-xs uppercase tracking-widest pt-2">
+            <Link
+              href="#projects"
+              onClick={() => cyberAudio.playClick()}
+              className="w-full sm:w-auto px-7 py-3.5 bg-[#00f2fe] text-black font-extrabold rounded-xl text-center flex items-center justify-center gap-2 hover:bg-[#00f2fe]/90 transition-all shadow-[0_0_25px_rgba(0,242,254,0.5)] cursor-pointer"
+            >
+              <span>Explore Projects</span>
+              <FaArrowDown className="text-xs animate-bounce" />
+            </Link>
+
+            <button
+              onClick={() => {
+                cyberAudio.playModal();
+                setShowDownloadModal(true);
+              }}
+              className="w-full sm:w-auto px-7 py-3.5 bg-black/60 border border-[#00ff41] hover:bg-[#00ff41]/20 text-[#00ff41] font-bold rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(0,255,65,0.3)] cursor-pointer"
+            >
+              <FaFileDownload className="text-sm" />
+              <span>Extract_Resume</span>
+            </button>
           </div>
         </motion.div>
       </div>
+
+      {/* Verified Stats Bar */}
+      <motion.div 
+        className="relative z-20 mt-14 p-4 rounded-2xl bg-[#070b14]/90 border border-gray-800 backdrop-blur-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-center font-mono shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.8 }}
+      >
+        <div className="p-3 border-b sm:border-b-0 sm:border-r border-gray-800/80">
+          <div className="text-2xl sm:text-3xl font-extrabold text-[#00f2fe] text-glow-cyan">785</div>
+          <div className="text-[11px] text-gray-400 uppercase tracking-wider mt-1">LeetCode Solved</div>
+        </div>
+        <div className="p-3 border-b sm:border-b-0 md:border-r border-gray-800/80">
+          <div className="text-2xl sm:text-3xl font-extrabold text-[#00ff41] text-glow-green">1,662</div>
+          <div className="text-[11px] text-gray-400 uppercase tracking-wider mt-1">Contest Rating</div>
+        </div>
+        <div className="p-3">
+          <div className="text-2xl sm:text-3xl font-extrabold text-yellow-400">16</div>
+          <div className="text-[11px] text-gray-400 uppercase tracking-wider mt-1">LeetCode Badges</div>
+        </div>
+      </motion.div>
 
       <DownloadModal
         isOpen={showDownloadModal}

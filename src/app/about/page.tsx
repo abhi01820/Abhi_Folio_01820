@@ -21,7 +21,7 @@ export default function About() {
   };
 
   return (
-    <div className="container max-w-5xl mx-auto py-16 px-4 relative z-10">
+    <div id="about" className="container max-w-5xl mx-auto py-16 px-4 relative z-10">
       {/* Title */}
       <motion.h1 
         className="text-4xl font-bold mb-8 text-center text-white font-mono uppercase tracking-widest text-glow-cyan"
@@ -163,22 +163,22 @@ export default function About() {
             </div>
           </div>
 
-          <div className="flex gap-4 mt-8 pt-6 border-t border-gray-800 font-mono text-sm uppercase tracking-wider">
+          <div className="flex flex-wrap gap-4 mt-8 pt-6 border-t border-gray-800 font-mono text-sm uppercase tracking-wider">
             <a
-              href="https://drive.google.com/file/d/1RmAhngXdSS6Dr6hpAc6cWwfOcFAQ85lI/view?usp=sharing"
+              href="https://drive.google.com/file/d/1IyN2cQCDN948ZRLn6N735rN2M-q0GdOd/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#00f2fe] hover:text-white transition-colors flex items-center gap-2"
+              className="px-4 py-2 rounded-lg bg-[#00f2fe]/15 border border-[#00f2fe] text-[#00f2fe] hover:bg-[#00f2fe]/30 hover:text-white transition-all flex items-center gap-2 shadow-[0_0_10px_rgba(0,242,254,0.2)]"
             >
-              [View_Certificate]
+              <span>[View_Certificate]</span> <span>↗</span>
             </a>
             <a
               href="/certs/Aetherpro_LOR.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-pink-400 hover:text-white transition-colors flex items-center gap-2"
+              className="px-4 py-2 rounded-lg bg-pink-500/15 border border-pink-500 text-pink-400 hover:bg-pink-500/30 hover:text-white transition-all flex items-center gap-2 shadow-[0_0_10px_rgba(236,72,153,0.2)]"
             >
-              [View_LOR]
+              <span>[View_LOR]</span> <span>↗</span>
             </a>
           </div>
         </div>
@@ -197,6 +197,11 @@ export default function About() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {[
+            {
+              title: "Complete Web Development",
+              icon: "🌐",
+              link: "https://drive.google.com/file/d/1Z2Ffz5Gqt5-_a5hsqnT4QxRa3EK-a2Jl/view?usp=sharing"
+            },
             {
               title: "Oracle Cloud Infrastructure 2025 Certified Generative AI Professional",
               icon: "🤖",

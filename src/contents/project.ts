@@ -16,6 +16,11 @@ export const projects: Project[] = [
     githubLink: "https://github.com/abhi01820/LangChain-SQL-Data-Analyst",
     demoLink: "",
     image: "/projects/LangChain-SQL-Data-Analyst.png",
+    category: "AI & Agents",
+    featured: true,
+    status: "PRODUCTION",
+    highlight: "NL-to-SQL Pipeline with Intelligent Analytics",
+    architecture: ["LangChain Chains", "HuggingFace LLMs", "SQLAlchemy ORM", "Interactive Plotly Charts"]
   },
   {
     title: "Multi-Agent AI Research System",
@@ -30,6 +35,11 @@ export const projects: Project[] = [
     githubLink: "https://github.com/abhi01820/Multi-Agent-AI-Research-System",
     demoLink: "",
     image: "/projects/Multi-Agent AI Research System.png",
+    category: "AI & Agents",
+    featured: true,
+    status: "PRODUCTION",
+    highlight: "Multi-Agent Collaboration Engine (Search, Reader, Critic, Writer)",
+    architecture: ["Gemini 1.5 Flash", "Tavily Search Engine", "Agentic Orchestration", "Automated Report Synthesis"]
   },
   {
     title: "AI Research Paper Analysis & RAG Chatbot",
@@ -45,11 +55,16 @@ export const projects: Project[] = [
     githubLink: "https://github.com/abhi01820/AI-Research-Paper-Analysis-ChatBOT",
     demoLink: "",
     image: "/projects/AI Research Paper Analysis-Langchain.png",
+    category: "AI & Agents",
+    featured: false,
+    status: "ONLINE",
+    highlight: "Ultra-Fast Groq LPUs & FAISS Semantic Vector Search",
+    architecture: ["RAG Architecture", "FAISS Vector Store", "Groq Inference Engine", "PyPDF Parser"]
   },
   {
     title: "AI Voice Medical Assistant",
     description:
-      "Real-Time AI Medical Voice Agent is a full-stack AI SaaS project built with Next.js, React, TypeScript, AssemblyAI, Clerk, and Neon DB. It enables users to interact with a virtual doctor using real-time voice input, offering symptom understanding and AI-powered responses. The app features speech-to-text, secure authentication, and cloud-based storage, making it ideal for modern healthcare AI solutions. Perfect for learning how to build and deploy real-time AI voice apps in the medical domain.",
+      "Real-Time AI Medical Voice Agent is a full-stack AI SaaS project built with Next.js, React, TypeScript, AssemblyAI, Clerk, and Neon DB. It enables users to interact with a virtual doctor using real-time voice input, offering symptom understanding and AI-powered responses. The app features speech-to-text, secure authentication, and cloud-based storage, making it ideal for modern healthcare AI solutions.",
     technologies: [
       "Next.js",
       "React.js",
@@ -59,11 +74,16 @@ export const projects: Project[] = [
       "Clerk",
       "Neon DB",
       "Tailwind CSS",
-      'Vercel'
+      "Vercel"
     ],
     githubLink: "https://github.com/abhi01820/AI_Voice_Medical_Agent",
     demoLink: "https://ai-voice-medical-agent-y2na.vercel.app",
     image: "/projects/project4.png",
+    category: "Voice AI",
+    featured: true,
+    status: "DEPLOYED",
+    highlight: "Real-Time Conversational Voice Diagnostics",
+    architecture: ["Vapi Voice Engine", "Next.js 14 App Router", "Serverless PostgreSQL Neon", "Clerk Authentication"]
   },
   {
     title: "AI Voice Mock Interview",
@@ -76,36 +96,46 @@ export const projects: Project[] = [
       "Tailwind CSS",
       "TypeScript",
       "Vapi AI",
-      "Shadcn UI ",
+      "Shadcn UI",
       "Google Gemini",
       "Zod",
-      'Vercel'
+      "Vercel"
     ],
     githubLink: "https://github.com/abhi01820/AI_Voice_Mock_Interview",
     demoLink: "https://ai-mock-interview-three-kappa.vercel.app",
     image: "/projects/project3.png",
+    category: "Voice AI",
+    featured: true,
+    status: "DEPLOYED",
+    highlight: "Interactive Voice Interview Simulation with Scoring",
+    architecture: ["Google Gemini Voice Prompts", "Vapi Live Speech", "Firebase Cloud DB", "Shadcn UI Component Kit"]
   },
   {
     title: "✨BuddyChat | Fullstack Chat & Video Call",
     description:
-      "A full-stack language exchange platform with real-time chat, video calls, emoji support,file support ,JWT authentication. Features include 32 UI themes, screen sharing, secure messaging, Friend Requests  . Built with Stream SDK, Zustand, and MongoDB, deployable on Vercel, Render, or Railway.",
+      "A full-stack language exchange platform with real-time chat, video calls, emoji support, file support, and JWT authentication. Features include 32 UI themes, screen sharing, secure messaging, and Friend Requests. Built with Stream SDK, Zustand, and MongoDB, deployable on Vercel, Render, or Railway.",
     technologies: [
       "React.js",
       "TailwindCSS",
-      "TanStack (React Query)",
+      "TanStack Query",
       "Node.js",
       "Express.js",
       "MongoDB",
       "Stream Video & Chat SDK",
-      'Render'
+      "Render"
     ],
     githubLink: "https://github.com/abhi01820/BuddyChat",
     demoLink: "https://buddychat-i9qy.onrender.com",
     image: "/projects/buddychat.png",
+    category: "Full Stack",
+    featured: true,
+    status: "DEPLOYED",
+    highlight: "Real-Time Video/Audio Calling & 32 Themes",
+    architecture: ["Stream WebRTC SDK", "Zustand Reactive Store", "JWT Auth", "MongoDB Atlas", "Express REST API"]
   },
   {
     title: "🤍 SoulSync: AI Relationship Companion",
-    description: "An AI-powered voice companion designed to simulate a supportive and emotionally intelligent relationship.",
+    description: "An AI-powered voice companion designed to simulate a supportive and emotionally intelligent relationship with speech-to-speech interaction and empathy-driven dialogue models.",
     technologies: [
       "AI Voice",
       "Next.js",
@@ -114,27 +144,37 @@ export const projects: Project[] = [
     ],
     githubLink: "https://github.com/abhi01820/AI-Voice-Relationship-Companion",
     demoLink: "",
-    image: "/projects/ai_voice_relationship_companion.png"
+    image: "/projects/ai_voice_relationship_companion.png",
+    category: "Voice AI",
+    featured: false,
+    status: "EXPERIMENTAL",
+    highlight: "Emotion-Aware Voice Synthesis & Empathetic Prompting",
+    architecture: ["Vapi Webhooks", "Contextual Memory Engine", "Responsive Speech Pipeline"]
   },
   {
-    title: "📚 Online Book Store [Ecommerce] ",
+    title: "📚 Online Book Store [Ecommerce]",
     description:
       "A full-stack MERN application where users can browse books, view descriptions, add to cart or favorites, place orders (payment not included yet), and sign up or log out. Admins can manage the book inventory and order list from a dedicated dashboard.",
     technologies: [
       "Reactjs",
       "MongoDB",
-      "Tailwind CSS[vite]",
-      " Express",
+      "Tailwind CSS",
+      "Express",
       "Node.js",
-      'Render'
+      "Render"
     ],
     githubLink: "https://github.com/abhi01820/ONLINE-BOOKSTORE",
     demoLink: "https://online-bookstore-vblc.onrender.com/",
     image: "/projects/project1.png",
+    category: "Full Stack",
+    featured: false,
+    status: "DEPLOYED",
+    highlight: "Complete MERN E-Commerce Architecture with Admin Console",
+    architecture: ["MERN Full Stack", "JWT Authentication", "MongoDB Aggregations", "Admin Inventory Portal"]
   },
   {
     title: "🚗 Vehicle Insurance MLOps",
-    description: "An end-to-end Machine Learning pipeline for vehicle insurance, incorporating CI/CD and MLOps practices.",
+    description: "An end-to-end Machine Learning pipeline for vehicle insurance risk assessment and pricing, incorporating automated data versioning, CI/CD, and MLOps deployment practices.",
     technologies: [
       "Python",
       "FastAPI",
@@ -145,32 +185,49 @@ export const projects: Project[] = [
     ],
     githubLink: "https://github.com/abhi01820/vehicle-insurance-mlops",
     demoLink: "",
-    image: "/projects/vehicle_insurance.png"
+    image: "/projects/vehicle_insurance.png",
+    category: "MLOps",
+    featured: false,
+    status: "ONLINE",
+    highlight: "Full MLOps Pipeline with DVC, MLflow & Docker CI/CD",
+    architecture: ["Data Version Control (DVC)", "MLflow Experiment Tracking", "Docker Containerization", "FastAPI Endpoints"]
   },
   {
     title: "🏥 MediGuide AI",
-    description: "An intelligent medical assistant system utilizing Optical Character Recognition and Natural Language Processing.",
+    description: "An intelligent medical assistant system utilizing Optical Character Recognition (OCR) and Natural Language Processing to parse clinical prescriptions and provide medical summaries.",
     technologies: [
       "JavaScript",
       "OCR",
-      "NLP"
+      "NLP",
+      "Python"
     ],
     githubLink: "https://github.com/abhi01820/MediGuide_AI",
     demoLink: "",
-    image: "/projects/mediguide.png"
+    image: "/projects/mediguide.png",
+    category: "AI & Agents",
+    featured: false,
+    status: "EXPERIMENTAL",
+    highlight: "Prescription OCR Parsing & Medical Knowledge Graph",
+    architecture: ["Tesseract OCR", "NLP Tokenization", "Medical Terminology Mapper"]
   },
   {
     title: "🎓 Education Analytics MLOps",
-    description: "Machine learning operations pipeline designed to analyze educational data and generate actionable insights.",
+    description: "Machine learning operations pipeline designed to analyze educational telemetry data, student engagement patterns, and generate predictive performance metrics.",
     technologies: [
       "Python",
       "Docker",
       "DVC",
-      "MLflow"
+      "MLflow",
+      "FastAPI"
     ],
     githubLink: "https://github.com/abhi01820/Education-Analytics-mlops",
     demoLink: "",
-    image: "/projects/education_analytics_mlops.png"
+    image: "/projects/education_analytics_mlops.png",
+    category: "MLOps",
+    featured: false,
+    status: "ONLINE",
+    highlight: "Student Retention & Performance Prediction Pipeline",
+    architecture: ["MLflow Registry", "Continuous Integration Workflows", "Automated Validation"]
   },
   {
     title: "SPREADSHEET MANAGEMENT UI",
@@ -181,13 +238,15 @@ export const projects: Project[] = [
       "TypeScript",
       "Tailwind CSS",
       "@tanstack/react-table",
-      "React Icons",
-      "Modular Component Architecture",
-      "Responsive Design",
-      "State Management"
+      "React Icons"
     ],
     githubLink: "https://github.com/abhi01820/Spreadsheet-Management-UI",
     demoLink: "https://spreadsheet-management-ui.vercel.app/",
-    image: "/projects/project6.png"
+    image: "/projects/project6.png",
+    category: "Frontend",
+    featured: false,
+    status: "DEPLOYED",
+    highlight: "Virtual Matrix Rendering & Formulas Engine",
+    architecture: ["@tanstack/react-table", "Virtual Grid Scrolling", "Modular UI Architecture"]
   }
 ];
